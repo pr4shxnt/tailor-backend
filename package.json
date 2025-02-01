@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for the tailor app. Contains category. sub category and master category wise products creation. Users account and login with otp. products feedback.",
+  "homepage": "https://github.com/pr4shxnt/tailor-backend#readme",
+  "bugs": {
+    "url": "https://github.com/pr4shxnt/tailor-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pr4shxnt/tailor-backend.git"
+  },
+  "license": "ISC",
+  "author": "Prashant Adhikari",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm run dev"
+  }
+}
