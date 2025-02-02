@@ -11,7 +11,8 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "dev"
+    "test": "dev",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

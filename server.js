@@ -4,22 +4,24 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./Database/db");
 const masterCategoryRoute = require('./Routes/masterCategoryRoute');
+const categoryRoute = require('./Routes/categoryRoutes');
 
 dotenv.config();
 
 const app = express();
 
-// Middleware
+ 
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
+ 
 connectDB();
 
-// Routes
-app.use('/api/masterCategories', masterCategoryRoute);  // <--- This line ensures your routes are recognized
+ 
+app.use('/api/masterCategories', masterCategoryRoute); 
+app.use('/api/categories', categoryRoute); 
 
-// Start Server
+ 
 const PORT = process.env.PORT ;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
