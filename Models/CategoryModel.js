@@ -6,7 +6,12 @@ const categorySchema = new mongoose.Schema({
         required: true,
         trim: true,
         unique: true
-    }
+    },
+    masterCategory: {
+        type: String,
+        index: true
+    },
+    
 },
  { timestamps: true 
 });
