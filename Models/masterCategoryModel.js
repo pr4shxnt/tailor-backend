@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
 
+// Define the schema
 const masterCategorySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-        unique: true
-    }
-},
- { timestamps: true 
+  name: { type: String, required: true, unique: true },
 });
 
-module.exports = mongoose.model('MasterCategory', masterCategorySchema);
+// Check if the model is already compiled
+const MasterCategory = mongoose.models.MasterCategory || mongoose.model('MasterCategory', masterCategorySchema);
+
+module.exports = MasterCategory;

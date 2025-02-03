@@ -7,9 +7,10 @@ const categorySchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    masterCategory: {
+    masterCategoryName: {
         type: String,
-        index: true
+        index: true,
+        required: true
     },
     
 },

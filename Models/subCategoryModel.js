@@ -6,11 +6,11 @@ const categorySchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    masterCategory: {
+    masterCategoryName: {
         type: String,
         required: true,
     },
-    category:{
+    categoryName:{
         type: String,
         required: true,
     }
@@ -18,4 +18,4 @@ const categorySchema = new mongoose.Schema({
  { timestamps: true 
 });
 
-module.exports = mongoose.model('Category', categorySchema);
+module.exports = mongoose.model('SubCategory', categorySchema);

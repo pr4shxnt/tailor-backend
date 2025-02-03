@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./Database/db");
 const masterCategoryRoute = require('./Routes/masterCategoryRoute');
 const categoryRoute = require('./Routes/categoryRoutes');
+const subCategoryRoute = require('./Routes/subCategoryRoute');
 
 dotenv.config();
 
@@ -20,9 +21,10 @@ connectDB();
  
 app.use('/api/masterCategories', masterCategoryRoute); 
 app.use('/api/categories', categoryRoute); 
+app.use('/api/subCategories', subCategoryRoute);
 
  
 const PORT = process.env.PORT ;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Local:   http://localhost:${PORT}/`);
 });
