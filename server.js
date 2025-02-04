@@ -6,6 +6,7 @@ const connectDB = require("./Database/db");
 const masterCategoryRoute = require('./Routes/masterCategoryRoute');
 const categoryRoute = require('./Routes/categoryRoutes');
 const subCategoryRoutes = require('./Routes/subCategoryRoute');
+const adminRoutes = require("./Routes/adminRoute");
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ connectDB();
 app.use('/api/masterCategories', masterCategoryRoute); 
 app.use('/api/categories', categoryRoute); 
 app.use('/api/subCategories', subCategoryRoutes);
-
+app.use("/api/admins", adminRoutes);
  
 const PORT = process.env.PORT ;
 app.listen(PORT, () => {
