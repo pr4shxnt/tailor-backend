@@ -35,28 +35,6 @@ const productSchema = new mongoose.Schema({
         min: 0,
         max: 5
     },
-    feedback: [
-        {
-            userName: {
-                type: String,
-                // Removed 'required: true'
-            },
-            content: {
-                type: String,
-                // Removed 'required: true'
-            },
-            rating: {
-                type: Number,
-                min: 0,
-                max: 5
-                // Removed 'required: true'
-            },
-            date: {
-                type: Date,
-                default: Date.now
-            }
-        }
-    ],
     stock: {
         type: Number,
         required: true
