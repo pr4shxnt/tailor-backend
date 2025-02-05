@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    role: {
+        type: String,
+        default: 'user'
+    },
     number: {
         type: Number,
         required: true,
@@ -26,7 +30,6 @@ const userSchema = new mongoose.Schema({
     },
     Address: {
         type: String,
-        required: true
     }
 
 }, { timestamps: true });
