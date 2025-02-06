@@ -26,10 +26,15 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 8,
-        max: 10
+        max: 100000000000
     },
     Address: {
         type: String,
+        required: true
     }
 
 }, { timestamps: true });
+
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;
