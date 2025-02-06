@@ -38,6 +38,7 @@ router.post('/create', upload.array('images', 10), productController.createNewPr
 router.get('/', productController.getAllProducts);
 router.put('/update/:id', upload.array('images', 10), productController.updateProduct);  // Added file upload support for update
 router.delete('/:id', productController.deleteProduct);
+router.get('/:id', productController.getProductById);
 
 
 
