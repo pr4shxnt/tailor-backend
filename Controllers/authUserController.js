@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 
 // Generate OTP
 const generateOTP = () => {
-    return otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+    return otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
 };
 
 // Send OTP via email
@@ -28,8 +28,8 @@ const sendOTPEmail = async (email, otp) => {
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
-            subject: 'OTP for Registration',
-            text: `Your OTP for registration is: ${otp}`,
+            subject: 'OTP for Registration of Shanta Tailors',
+            html: `Your OTP for registration is: <b>${otp}</b>. Please verify to complete registration. And we, Shanta Tailors request you not to share this otp with anyone.`,   
         };
 
         await transporter.sendMail(mailOptions);
@@ -167,28 +167,44 @@ exports.verifyOTP = async (req, res) => {
 
 
 // Login User
+// Login User
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
-
+  
     try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: 'User not found' });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(400).json({ message: 'Invalid password' });
-        }
-
-        const token = jwt.sign(
-            { id: user._id, role: 'user' },
-            process.env.JWT_SECRET,
-            { expiresIn: '1d' }
-        );
-
-        res.status(200).json({ message: 'User logged in successfully', token });
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+      }
+  
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(400).json({ message: 'Invalid password' });
+      }
+  
+      const token = jwt.sign(
+        { id: user._id},
+        process.env.JWT_SECRET,
+        { expiresIn: '10d' }
+      );
+  
+      console.log("Generated Token:", token); // Ensure token is generated
+  
+      // Send response with user data and token
+      res.status(200).json({
+        message: 'Login successful',
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          DOB: user.DOB,
+          number: user.number,
+          Address: user.Address
+        },
+        token
+      });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
-};
+  };
+  
