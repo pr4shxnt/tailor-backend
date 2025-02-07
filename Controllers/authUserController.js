@@ -28,8 +28,8 @@ const sendOTPEmail = async (email, otp) => {
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
-            subject: 'OTP for Registration of Shanta Tailors',
-            html: `Your OTP for registration is: <b>${otp}</b>. Please verify to complete registration. And we, Shanta Tailors request you not to share this otp with anyone.`,   
+            subject:` Your OTP for registration : ${otp} `,
+            html: `We Shanta Tailors are happy to have you as our customer. Your OTP for registration is <strong> ${otp} </strong>. Please verify your email to complete registration. <br><br> Please don't share this OTP with anyone for security reasons. <br> <br><br> Thanks & Regards, <br> Shanta Tailors Team`,   
         };
 
         await transporter.sendMail(mailOptions);
