@@ -81,7 +81,7 @@ exports.getCart = async (req, res) => {
             return res.status(401).json({ message: 'Invalid or expired token' });
         }
 
-        const cart = await Cart.findOne({ userId:"67a623458d21d8a784136e31" }).populate('items.productId'); // Ensure populate works correctly
+        const cart = await Cart.findOne({ userId }).populate('items.productId'); // Ensure populate works correctly
 
         if (!cart) return res.status(404).json({ message: 'Cart not found' });
         res.status(200).json(cart);
@@ -91,39 +91,77 @@ exports.getCart = async (req, res) => {
     }
 };
 
-// Remove an item from the cart
-exports.removeFromCart = async (req, res) => {
-    try {
-        // Get the token from the Authorization header
-        const token = req.headers.authorization?.split(" ")[1];  // Extract token from "Bearer <token>"
+
+exports.getCartByUserID = async (req, res) => {
+
+    const token = req.params.sessionid;  // Extract token from "Bearer <token>"
         if (!token) {
             return res.status(401).json({ message: 'No session or user ID, authorization denied' });
         }
 
+        console.log(token);
+        
+
         // Decode the token to get the user ID
+        let userId;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userId = decoded.id;
+
+        console.log(userId);
+        
+        try {
+          
+            
+        const cart = await Cart.findOne({ userId }).populate('items.productId');
+        if (!cart) return res.status(404).json({ message: 'Cart not found' });
+
+        res.status(200).json(cart);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching cart' });
+    }
+};
+
+
+// Remove an item from the cart
+exports.removeFromCart = async (req, res) => {
+    try {
+        // Get the token from the Authorization header
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ message: 'Authorization denied, token missing' });
+        }
+        const token = authHeader.split(" ")[1];
+
+        // Decode token
         let userId;
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            userId = decoded.id;  // Extract user ID from the decoded token
+            userId = decoded.id;
         } catch (error) {
             return res.status(401).json({ message: 'Invalid or expired token' });
         }
 
         const { productId } = req.params;
 
-        const cart = await Cart.findOne({ userId });
-        if (!cart) return res.status(404).json({ message: 'Cart not found' });
+        // Find and update the cart efficiently
+        const updatedCart = await Cart.findOneAndUpdate(
+            { userId },
+            { $pull: { items: { productId } } }, // Remove item from cart
+            { new: true }
+        );
 
-        // Filter out the item to be removed
-        cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+        if (!updatedCart) {
+            return res.status(404).json({ message: 'Cart not found' });
+        }
 
-        // Recalculate total price after item removal
-        cart.totalPrice = cart.items.reduce((total, item) => total + item.quantity * item.price, 0);
-        
-        await cart.save();
-        res.status(200).json(cart);
+        // Recalculate total price dynamically
+        updatedCart.totalPrice = updatedCart.items.reduce((total, item) => total + item.quantity * item.price, 0);
+        await updatedCart.save();
+
+        res.status(200).json(updatedCart);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error removing from cart' });
+        res.status(500).json({ message: 'Error removing item from cart' });
     }
 };
