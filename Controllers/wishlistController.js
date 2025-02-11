@@ -48,6 +48,34 @@ exports.getWishListbyID = async (req, res) => {
     }
 };
 
+
+exports.checkProductWishList = async (req, res) => {
+    try {
+        const { userId, productId } = req.params;
+
+        // Validate input
+        if (!userId || !productId) {
+            return res.status(400).json({ message: "userId and productId are required." });
+        }
+
+        // Find wishlist for the user
+        let wishlist = await WishList.findOne({ userId });
+
+        if (!wishlist) {
+            return res.status(404).json({ message: "Wishlist not found" });
+        }
+
+        // Check if product exists in wishlist
+        const itemExists = wishlist.items.some(item => item.productId.toString() === productId);
+
+        res.status(200).json({ exists: itemExists });
+    } catch (error) {
+        console.error("Error checking product in wishlist:", error);
+        res.status(500).json({ message: "Error checking product in wishlist", error: error.message });
+    }
+};
+
+
 // Remove item from wishlist
 exports.removeFromWishList = async (req, res) => {
     try {
