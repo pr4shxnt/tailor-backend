@@ -107,10 +107,9 @@ exports.getAllUsers = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-// Verify OTP and Complete Registration
-// Ensure global.otpCache is initialized
+
 if (!global.otpCache) {
-    global.otpCache = {}; // Initialize OTP cache globally if it doesn't exist
+    global.otpCache = {};  
 }
 
 exports.verifyOTP = async (req, res) => {
@@ -208,3 +207,19 @@ exports.loginUser = async (req, res) => {
     }
   };
   
+
+
+  exports.getUserDetailsByID = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id).select('name Address number'); // Selecting only required fields
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

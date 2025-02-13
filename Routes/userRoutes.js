@@ -14,4 +14,7 @@ router.post('/forgot-password', userController.forgotPassword);
 // Login User Route
 router.post('/login', userController.loginUser);
 
+
+router.get('/:id', userController.getUserDetailsByID)
+
 module.exports = router;
