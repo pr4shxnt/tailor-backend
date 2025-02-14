@@ -12,6 +12,7 @@ const path = require('path');
 const userRoutes = require('./Routes/userRoutes');
 const cartRoutes = require('./Routes/cartRoutes');
 const wishRoutes = require("./Routes/wishRoutes")
+const ReviewRoutes = require("./Routes/ReviewRoutes")
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use("/api/products", ProductRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishRoutes)
+app.use("/api/review", ReviewRoutes)
 
 const PORT = process.env.PORT ;
 app.listen(PORT, () => {

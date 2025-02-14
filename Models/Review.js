@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
-const reviewSchema = new mongoose.Schema({  
-    product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true
-    },
+
+const reviewComments = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -17,14 +13,21 @@ const reviewSchema = new mongoose.Schema({
         min: 0,
         max: 5
     },
-    review: {
-        type: String,
-        required: true
-    },
     comment: {
         type: String,
         required: true
     }
+})
+
+
+const reviewSchema = new mongoose.Schema({  
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+    },
+    reviews: [reviewComments]
+    
 }, { timestamps: true });
 
 
