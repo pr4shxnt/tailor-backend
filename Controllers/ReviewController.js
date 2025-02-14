@@ -3,6 +3,7 @@ const Product = require("../Models/ProductModel");
 const User = require("../Models/UserModel");
 const Review = require("../Models/Review");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose")
 
 exports.addReview = async (req, res) => {
     try {
@@ -62,6 +63,11 @@ exports.getReviewByProductId = async (req, res) => {
     try {
         const { productId } = req.params;
 
+        // Validate productId before querying
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({ message: "Invalid product ID" });
+        }
+
         const reviews = await Review.findOne({ product: productId }).populate("reviews.user", "name");
 
         if (!reviews) {
@@ -74,7 +80,6 @@ exports.getReviewByProductId = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
-
 
 exports.deleteReviewByUserId = async (req, res) => {
     try {
