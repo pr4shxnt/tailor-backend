@@ -187,7 +187,6 @@ exports.loginUser = async (req, res) => {
         { expiresIn: '10d' }
       );
   
-      console.log("Generated Token:", token); // Ensure token is generated
   
       // Send response with user data and token
       res.status(200).json({
